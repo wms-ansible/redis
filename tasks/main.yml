@@ -1,0 +1,76 @@
+---
+- name: 下载redis最新安装包
+  get_url: 
+    url: http://download.redis.io/releases/redis-4.0.11.tar.gz
+    dest: /tmp/redis.tar.gz
+    timeout: 50
+- name: 创建redis安装目录/redis
+  file:
+    path: /redis/src
+    state: directory
+    mode: 0755
+- name: 解压redis安装包
+  unarchive:
+    src: /tmp/redis.tar.gz
+    dest: /redis/src 
+    remote_src: yes
+    extra_opts:
+      - --strip-components=1
+- name: 创建配置文件目录
+  file:
+    path: "/redis/{{item}}"
+    state: directory
+    mode: 0755
+  with_items:
+    - conf
+    - log
+- name: install the 'Development tools' package group
+  yum:
+    name: "@Development tools"
+    state: present
+- name: 编译依赖项
+  command: "make hiredis lua jemalloc linenoise"
+  args:
+    chdir: /redis/src/deps/
+- name: 编译redis
+  command: "make"
+  args:
+    chdir: /redis/src/
+- name: 安装redis
+  command: "make PREFIX=/redis install"
+  args:
+    chdir: /redis/src/
+- name: 上传redis配置文件
+  template:
+    src: redis.conf.j2
+    dest: /redis/conf/redis-{{item}}.conf
+  with_items: [6379,6380]
+- name: 启动各个redis节点实例
+  command: "bin/redis-server conf/redis-{{item}}.conf"
+  args:
+    chdir: /redis/
+  with_items: [6379,6380]
+- name: 等待节点6379实例启动成功
+  wait_for:
+    host: 0.0.0.0
+    delay: 5 
+    state: started
+    timeout: 30 
+    port: 6379
+- name: 等待节点6380实例启动成功
+  wait_for:
+    host: 0.0.0.0
+    delay: 5 
+    state: started
+    timeout: 30 
+    port: 6380
+- import_tasks: conf-redis-cluster.yml
+  run_once: true
+
+
+
+
+
+
+
+
