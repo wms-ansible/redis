@@ -1,0 +1,20 @@
+---
+- name: 启动各个redis节点实例
+  command: "bin/redis-server conf/redis-{{item}}.conf"
+  args:
+    chdir: /redis/
+  with_items: [6379,6380]
+- name: 等待节点6379实例启动成功
+  wait_for:
+    host: 0.0.0.0
+    delay: 5 
+    state: started
+    timeout: 30 
+    port: 6379
+- name: 等待节点6380实例启动成功
+  wait_for:
+    host: 0.0.0.0
+    delay: 5 
+    state: started
+    timeout: 30 
+    port: 6380

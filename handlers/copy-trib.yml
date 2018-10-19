@@ -1,0 +1,6 @@
+---
+- name: copy trib.rb
+  copy:
+    src: src/src/redis-trib.rb
+    dest: /redis
+    remote_src: yes

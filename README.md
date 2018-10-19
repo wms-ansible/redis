@@ -1,31 +1,42 @@
-Role Name
+redis-cluster
 =========
 
-A brief description of the role goes here.
+3个主机节点，每个主机节点上运行2个redis实例
+
+一共有6个redis实例，3个master实例，3个slave实例
+
+通过脚本安装redis-cluster，master、slave实例由脚本动态分配
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+cestos7
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+ansible_ssh_user: root
+ansible_ssh_pass: 123456
+redis_node:
+  - 172.18.113.63
+  - 172.18.113.83
+  - 172.18.113.94
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+wms_ansible.yum
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+---
+- hosts: redis-wms
+  gather_facts: true
+  roles: 
+    - role: wms_ansible.yum
+    - role: wms_ansible.redis
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
 
 License
 -------
