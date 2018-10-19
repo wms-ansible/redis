@@ -37,13 +37,3 @@ Example Playbook
     - role: wms_ansible.yum
     - role: wms_ansible.redis
 
-
-License
--------
-
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
