@@ -1,6 +1,6 @@
 ---
-- include copy-trib.yml
-- include start-redis-cluster.yml
+- import_tasks: copy-trib.yml
+- import_tasks: start-redis-cluster.yml
 
 
 

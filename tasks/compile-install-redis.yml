@@ -1,7 +1,7 @@
 ---
 - name: 下载redis最新安装包
   get_url: 
-    url: http://download.redis.io/releases/redis-4.0.11.tar.gz
+    url: "http://download.redis.io/releases/redis-{{redis_version}}.tar.gz"
     dest: /tmp/redis.tar.gz
     timeout: 50
 - name: 创建redis安装目录/redis

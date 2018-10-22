@@ -1,8 +1,6 @@
 ---
-- name: copy trib.rb
+- name: copy trib script 
   copy:
-    src: src/src/redis-trib.rb
+    src: /redis/src/src/redis-trib.rb
     dest: /redis
     remote_src: yes
-  args:
-    chdir: /redis

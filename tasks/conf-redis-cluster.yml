@@ -1,15 +1,8 @@
 ---
-- name: 上传安装ruby脚本
-  copy:
-    src: install-ruby-redis.sh
-    dest: /tmp/
-    mode: u+x
-- name: 运行安装ruby脚本,this may take a while depending on your cpu(s)...
-  command: "./install-ruby-redis.sh"
-  args:
-    chdir: /tmp/
+- name: 安装ruby和redis的借口程序
+  command: "gem install redis"
   notify: 
-    - copy trib.rb
+    - copy trib script
     - start redis cluster
 
 
